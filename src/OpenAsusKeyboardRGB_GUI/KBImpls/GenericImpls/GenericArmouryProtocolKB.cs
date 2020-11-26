@@ -6,10 +6,11 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using System.Linq;
 using RogArmouryKbRevengGUI.KBInterfaces;
+using RogArmouryKbRevengGUI_NETFW.KeyMappings;
 
 namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
 {
-    abstract class GenericAsusRogKB : GenericHIDKeyboard, IGenericAsusRogKB, IAuraSyncKB
+    abstract class GenericArmouryProtocolKB : GenericHIDKeyboard, IArmouryProtocolKB, IAuraSyncProtocolKB
     {
         protected override int DevicePID { get { return PIDOfThisDevice; } }
         protected override int DeviceVID { get { return 2821; } }
@@ -310,22 +311,49 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
         }
 
         public abstract Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode);
-        public abstract Tuple<int, int> GetDirectColorCanvasIndexByVKCode(int virtualkeyCode);
         public abstract Tuple<int, int> GetDirectColorCanvasMaxLength();
+        public virtual Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
+        {
+            //Mapping the keys that are left unmapped by the Aura SDK
+            if (key == AsusAuraSDKKeys.UNOFFICIAL_ISO_HASH)
+            {
+                return Tuple.Create(3, 13);
+            }
+            else if (key == AsusAuraSDKKeys.UNOFFICIAL_ISO_BACKSLASH)
+            {
+                return Tuple.Create(4, 1);
+            }
 
-        public virtual void SetDirectColorCanvas(Color[] colorData)
+            var rgbKey = AuraSyncProtocolKeyMappings.GenericMapping.FirstOrDefault(x => x.KeyCode == (ushort)key);
+            if (rgbKey == null)
+            {
+                throw new ArgumentException();
+            }
+
+            var maxLen = GetDirectColorCanvasMaxLength();
+            if (rgbKey.X >= maxLen.Item2 || rgbKey.Y >= maxLen.Item1)
+            {
+                throw new ArgumentException();
+            }
+
+            return Tuple.Create((int)rgbKey.X, (int)rgbKey.Y);
+        }
+
+        public virtual void SetDirectColorCanvas(Color[,] colorDataArg)
         {
             //NOTE: the number of rows and columns for all keyboards are as follows
             //Claymore 23,8
             //TUF K5 5,1
             //Charm 24,6
             //Flare COD 24,6
-            //Rog CTRL 24,6
+            //Rog CTRL(Rog Scope Normal) 24,6
             //Flare PNK 24,6
             //TUF K7 23,6
             //Scope TKL 26,7
             //This function works with Strix CTRL, Scope TKL, Flare PNK, Flare COD, Charm, TUFK7
             //Doesn't work with TUFKB(K5) and Claymore(any model including the core)
+
+            var colorData = colorDataArg.Cast<Color>().ToArray();
 
             byte[] buffer = new byte[64];
             int XMax = GetDirectColorCanvasMaxLength().Item1;

@@ -1,13 +1,14 @@
 ﻿using RogArmouryKbRevengGUI.KBImpls.GenericImpls;
+using RogArmouryKbRevengGUI_NETFW.KeyMappings;
 using System;
 
 namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
 {
-    class AsusStrixFlareNormal : GenericAsusRogKB
+    class AsusStrixFlareNormal : GenericArmouryProtocolKB
     {
         public override string GetPrettyName()
         {
-            return "Asus Strix Flare";
+            return "Asus Strix Flare"; //Referred to as the "Asus Charm" in the Aura SDK
         }
         protected override int PIDOfThisDevice
         {
@@ -21,12 +22,8 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
         {
             throw new NotImplementedException(); //TODO
         }
-        public override Tuple<int, int> GetDirectColorCanvasIndexByVKCode(int virtualkeyCode)
-        {
-            throw new NotImplementedException(); //TODO
-        }
     }
-    class AsusStrixFlareCOD : GenericAsusRogKB
+    class AsusStrixFlareCOD : GenericArmouryProtocolKB
     {
         protected override int PIDOfThisDevice
         {
@@ -44,12 +41,8 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
         {
             throw new NotImplementedException(); //TODO
         }
-        public override Tuple<int, int> GetDirectColorCanvasIndexByVKCode(int virtualkeyCode)
-        {
-            throw new NotImplementedException(); //TODO
-        }
     }
-    class AsusStrixFlarePNK : GenericAsusRogKB
+    class AsusStrixFlarePNK : GenericArmouryProtocolKB
     {
         protected override int PIDOfThisDevice
         {
@@ -64,10 +57,6 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
             return Tuple.Create(24, 6);
         }
         public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
-        {
-            throw new NotImplementedException(); //TODO
-        }
-        public override Tuple<int, int> GetDirectColorCanvasIndexByVKCode(int virtualkeyCode)
         {
             throw new NotImplementedException(); //TODO
         }

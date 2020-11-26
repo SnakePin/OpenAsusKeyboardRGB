@@ -5,9 +5,9 @@
 #include "RogKeyEnum.h"
 
 struct RawKeyMapFromBinaryStruct {
-	uint8_t X;
-	uint8_t unk1;
 	uint8_t Y;
+	uint8_t unk1;
+	uint8_t X;
 	uint8_t unk2;
 };
 
@@ -45,8 +45,8 @@ int main(int argc, char* argv[])
 	}
 
 	const std::string inputPath = argv[1];
-	const std::string genericMappingOutPath = "claymoreMapDump.txt";
-	const std::string claymoreMappingOutPath = "genericMapDump.txt";
+	const std::string genericMappingOutPath = "genericMapDump.txt";
+	const std::string claymoreMappingOutPath = "claymoreMapDump.txt";
 
 	//AacKbHal_x64.dll (SHA1 7EF92EFA38B788692B2910A542F4F1F3E3913902)
 	const size_t genericRawKeymapOffset = 0x86990;
@@ -69,9 +69,9 @@ int main(int argc, char* argv[])
 
 			for (auto& key : arrayOut)
 			{
-				//int index = key.Y * 23 + key.X;
+				//int index = key.X * 23 + key.Y;
 				if (key.KeyCode == static_cast<uint16_t>(RogKeys::ROG_KEY_A)) {
-					assert(key.X == 2 && key.Y == 3);
+					assert(key.X == 3 && key.Y == 2);
 				}
 
 				outFile << "X: " << static_cast<int>(key.X) << " Y: " << static_cast<int>(key.Y) << " KeyCode: 0x" << std::hex << key.KeyCode << std::dec << '\n';
@@ -87,9 +87,9 @@ int main(int argc, char* argv[])
 
 			for (auto& key : arrayOut)
 			{
-				//int index = key.X * 8 + key.Y;
+				//int index = key.Y * 8 + key.X;
 				if (key.KeyCode == static_cast<uint16_t>(RogKeys::ROG_KEY_A)) {
-					assert(key.X == 1 && key.Y == 3);
+					assert(key.X == 3 && key.Y == 1);
 				}
 
 				outFile << "X: " << static_cast<int>(key.X) << " Y: " << static_cast<int>(key.Y) << " KeyCode: 0x" << std::hex << key.KeyCode << std::dec << '\n';

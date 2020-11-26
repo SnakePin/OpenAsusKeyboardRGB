@@ -6,7 +6,7 @@ namespace RogArmouryKbRevengGUI.KBInterfaces
     //TODO: Add animation frame getter setters
     //TODO: Add macro stuff(?)
     //TODO: Implement generic FW update protocol(?)
-    interface IGenericAsusRogKB : IGenericKB
+    interface IArmouryProtocolKB : IBasicHIDKB
     {
         void SetProfileIndex(byte newIndex);
         byte GetProfileIndex();

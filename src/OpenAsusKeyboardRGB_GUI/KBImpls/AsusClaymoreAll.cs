@@ -2,6 +2,7 @@
 using RogArmouryKbRevengGUI;
 using RogArmouryKbRevengGUI.KBImpls.GenericImpls;
 using RogArmouryKbRevengGUI.KBInterfaces;
+using RogArmouryKbRevengGUI_NETFW.KeyMappings;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace RogArmouryKbRevengGUI_NETFW.KBImpls
 {
-    class AsusClaymore : GenericHIDKeyboard, IGenericAsusRogKB, IAuraSyncKB
+    class AsusClaymore : GenericHIDKeyboard, IArmouryProtocolKB, IAuraSyncProtocolKB
     {
         protected override int DevicePID { get { return 6221; } }
         protected override int DeviceVID { get { return 2821; } }
@@ -197,9 +198,11 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             return Tuple.Create(23, 8);
         }
 
-        public void SetDirectColorCanvas(Color[] arg1)
+        public void SetDirectColorCanvas(Color[,] arg1)
         {
             AuraSyncModeSwitch(true);
+
+            var colorArray = arg1.Cast<Color>().ToArray();
 
             int XMax = GetDirectColorCanvasMaxLength().Item1;
             int YMax = GetDirectColorCanvasMaxLength().Item2;
@@ -240,9 +243,9 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
                 iVar10 = uVar14 - bVar6;
                 buffer[uVar9 + 4] = (byte)(((byte)iVar10 + ((byte)(iVar10 >> 0x1f) & 7) & 0xf8) + bVar6);
 
-                buffer[uVar9 + 5] = arg1[uVar14].R;
-                buffer[uVar9 + 6] = arg1[uVar14].G;
-                buffer[uVar9 + 7] = arg1[uVar14].B;
+                buffer[uVar9 + 5] = colorArray[uVar14].R;
+                buffer[uVar9 + 6] = colorArray[uVar14].G;
+                buffer[uVar9 + 7] = colorArray[uVar14].B;
 
                 uVar14++;
                 bVar8 = (byte)(uVar9 + 4);
@@ -462,7 +465,7 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             throw new NotImplementedException(); //TODO
         }
 
-        public Tuple<int, int> GetDirectColorCanvasIndexByVKCode(int virtualkeyCode)
+        public Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
         {
             throw new NotImplementedException(); //TODO
         }

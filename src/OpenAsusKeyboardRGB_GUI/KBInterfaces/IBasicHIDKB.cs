@@ -1,6 +1,6 @@
 ﻿namespace RogArmouryKbRevengGUI.KBInterfaces
 {
-    interface IGenericKB
+    interface IBasicHIDKB
     {
         void Close();
         void Connect();

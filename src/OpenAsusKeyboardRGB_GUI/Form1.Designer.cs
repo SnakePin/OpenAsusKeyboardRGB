@@ -59,6 +59,7 @@
             this.breathingSlow = new System.Windows.Forms.RadioButton();
             this.breathingFast = new System.Windows.Forms.RadioButton();
             this.breathingMedium = new System.Windows.Forms.RadioButton();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.staticEffectColorPbox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -209,7 +210,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(255, 247);
+            this.button5.Location = new System.Drawing.Point(255, 276);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(235, 23);
             this.button5.TabIndex = 7;
@@ -229,7 +230,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(255, 276);
+            this.button8.Location = new System.Drawing.Point(255, 305);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(120, 23);
             this.button8.TabIndex = 10;
@@ -239,7 +240,7 @@
             // 
             // newProfileIndexNumBox
             // 
-            this.newProfileIndexNumBox.Location = new System.Drawing.Point(381, 278);
+            this.newProfileIndexNumBox.Location = new System.Drawing.Point(381, 307);
             this.newProfileIndexNumBox.Maximum = new decimal(new int[] {
             255,
             0,
@@ -392,11 +393,22 @@
             this.breathingMedium.Text = "Medium";
             this.breathingMedium.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(255, 247);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(235, 23);
+            this.button3.TabIndex = 15;
+            this.button3.Text = "Set random multistatic via Aura Sync protocol";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 336);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.numericUpDown2);
             this.Controls.Add(this.forceExitAuraSyncModeBtn);
@@ -460,5 +472,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox breathingRandomColorCheckBox;
         private System.Windows.Forms.CheckBox breathingDoubleColorCheckBox;
+        private System.Windows.Forms.Button button3;
     }
 }

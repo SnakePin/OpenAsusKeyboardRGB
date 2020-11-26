@@ -1,5 +1,6 @@
 ﻿using RogArmouryKbRevengGUI.InterfaceGenericKeyboard;
 using RogArmouryKbRevengGUI.KBInterfaces;
+using RogArmouryKbRevengGUI_NETFW.KeyMappings;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -8,7 +9,7 @@ namespace RogArmouryKbRevengGUI
 {
     public partial class Form1 : Form
     {
-        IGenericAsusRogKB ourKeyboard = null;
+        IArmouryProtocolKB ourKeyboard = null;
 
         public Form1()
         {
@@ -17,7 +18,7 @@ namespace RogArmouryKbRevengGUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            foreach (IGenericAsusRogKB currentKBInstance in ReflectiveEnumerator.GetEnumerableOfType<IGenericAsusRogKB>())
+            foreach (IArmouryProtocolKB currentKBInstance in ReflectiveEnumerator.GetEnumerableOfType<IArmouryProtocolKB>())
             {
                 if (currentKBInstance.DoesExistOnSystem())
                 {
@@ -68,11 +69,19 @@ namespace RogArmouryKbRevengGUI
         {
             var msData = new MultiStaticData();
             var rnd = new Random();
-            for(int i = 0; i < 128; i++)
+            for (int i = 0; i < 128; i++)
             {
-                var idx = ourKeyboard.GetMultiStaticColorDataIndexByVKCode(i);
-                msData.colorAndBrightness[idx.Item1, idx.Item2].brightness = 100;
-                msData.colorAndBrightness[idx.Item1, idx.Item2].color = Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
+                try
+                {
+                    var idx = ourKeyboard.GetMultiStaticColorDataIndexByVKCode(i);
+                    msData.colorAndBrightness[idx.Item1, idx.Item2].brightness = 100;
+                    msData.colorAndBrightness[idx.Item1, idx.Item2].color = Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
+                }
+                catch (ArgumentException)
+                {
+                    //GetMultiStaticColorDataIndexByVKCode will throw an ArgumentException for unmapped virtual-key codes
+                    continue;
+                }
             }
 
             ourKeyboard.SetEffect_WriteMultiStaticColorData(msData);
@@ -82,23 +91,19 @@ namespace RogArmouryKbRevengGUI
         {
             ourKeyboard.AuraSyncModeSwitch(true);
 
-            IAuraSyncKB iface = ourKeyboard as IAuraSyncKB;
+            IAuraSyncProtocolKB iface = ourKeyboard as IAuraSyncProtocolKB;
 
             var maxlen = iface.GetDirectColorCanvasMaxLength();
-            Color[] dundundun = new Color[maxlen.Item1 * maxlen.Item2];
+            Color[,] colorArr = new Color[maxlen.Item2, maxlen.Item1];
 
-            numericUpDown2.Maximum = dundundun.Length-1;
+            numericUpDown2.Maximum = colorArr.Length - 1;
             numericUpDown2.Value = Math.Min(numericUpDown2.Maximum, numericUpDown2.Value);
 
-            dundundun[(int)numericUpDown2.Value] = Color.Red;
-            /*var rnd = new Random();
-            for (int i = 0; i < 128; i++)
-            {
-                var idx = iface.GetDirectColorCanvasIndexByVKCode(i);
-                dundundun[idx.Item1 * maxlen.Item2 + maxlen.Item2] = Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
-            }*/
+            int x = (int)numericUpDown2.Value / maxlen.Item1;
+            int y = (int)numericUpDown2.Value % maxlen.Item1;
 
-            iface.SetDirectColorCanvas(dundundun);
+            colorArr[x, y] = Color.Red;
+            iface.SetDirectColorCanvas(colorArr);
 
             //ourKeyboard.AuraSyncModeSwitch(false);
         }
@@ -131,7 +136,7 @@ namespace RogArmouryKbRevengGUI
             }
 
             BreathingTypes type = BreathingTypes.Single;
-            if(breathingDoubleColorCheckBox.Checked)
+            if (breathingDoubleColorCheckBox.Checked)
             {
                 type = BreathingTypes.Double;
             }
@@ -158,6 +163,66 @@ namespace RogArmouryKbRevengGUI
         {
             colorDialog1.ShowDialog();
             pictureBox2.BackColor = colorDialog1.Color;
+        }
+
+        private static Color GetRainbowGradient(float progress)
+        {
+            float div = (Math.Abs(progress % 1) * 6);
+            int ascending = (int)((div % 1) * 255);
+            int descending = 255 - ascending;
+
+            switch ((int)div)
+            {
+                case 0:
+                    return Color.FromArgb(255, 255, ascending, 0);
+                case 1:
+                    return Color.FromArgb(255, descending, 255, 0);
+                case 2:
+                    return Color.FromArgb(255, 0, 255, ascending);
+                case 3:
+                    return Color.FromArgb(255, 0, descending, 255);
+                case 4:
+                    return Color.FromArgb(255, ascending, 0, 255);
+                default: // case 5:
+                    return Color.FromArgb(255, 255, 0, descending);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ourKeyboard.AuraSyncModeSwitch(true);
+
+            IAuraSyncProtocolKB iface = ourKeyboard as IAuraSyncProtocolKB;
+
+            var maxlen = iface.GetDirectColorCanvasMaxLength();
+            Color[,] colorArr = new Color[maxlen.Item2, maxlen.Item1];
+
+            numericUpDown2.Maximum = colorArr.Length - 1;
+            numericUpDown2.Value = Math.Min(numericUpDown2.Maximum, numericUpDown2.Value);
+
+            //var rnd = new Random();
+
+            var enumVals = (AsusAuraSDKKeys[])Enum.GetValues(typeof(AsusAuraSDKKeys));
+            for (int i = 0; i < enumVals.Length; i++)
+            {
+                try
+                {
+                    var idx = iface.GetDirectColorCanvasIndexByAuraSDKKey(enumVals[i]);
+                    colorArr[idx.Item1, idx.Item2] = GetRainbowGradient((float)i / (float)enumVals.Length);//Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
+                }
+                catch (ArgumentException)
+                {
+                    //GetMultiStaticColorDataIndexByVKCode will throw an ArgumentException for unmapped keys
+                    continue;
+                }
+            }
+
+            var idx2 = iface.GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys.ROG_KEY_A);
+            colorArr[idx2.Item1, idx2.Item2] = Color.Red;
+
+            iface.SetDirectColorCanvas(colorArr);
+
+            //ourKeyboard.AuraSyncModeSwitch(false);
         }
     }
 }
