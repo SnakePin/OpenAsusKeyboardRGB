@@ -8,18 +8,14 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace RogArmouryKbRevengGUI_NETFW.KBImpls
 {
     class AsusClaymore : GenericHIDKeyboard, IArmouryProtocolKB, IAuraSyncProtocolKB
     {
-        protected override int DevicePID { get { return 6221; } }
-        protected override int DeviceVID { get { return 2821; } }
-        public string GetPrettyName()
-        {
-            return "Asus Claymore (Core?)";
-        }
+        protected override int DevicePID => 6221;
+        protected override int DeviceVID => 2821;
+        public string PrettyName => "Asus Claymore (Core?)";
 
         public void Connect()
         {
@@ -175,6 +171,7 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             ExecuteMacroFlash,
             ExecuteProfileFlashCmd,
             GetKeyLogData,
+            AuraSyncProtocolUpdateCommand,
             InvalidResponse
         };
 
@@ -198,11 +195,29 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             return Tuple.Create(23, 8);
         }
 
+        public Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
+        {
+            var rgbKey = AuraSyncProtocolKeyMappings.ClaymoreMapping.FirstOrDefault(x => x.KeyCode == (ushort)key);
+            if (rgbKey == null)
+            {
+                throw new ArgumentException();
+            }
+
+            var maxLen = GetDirectColorCanvasMaxLength();
+            if (rgbKey.X >= maxLen.Item2 || rgbKey.Y >= maxLen.Item1)
+            {
+                throw new ArgumentException();
+            }
+
+            return Tuple.Create((int)rgbKey.X, (int)rgbKey.Y);
+        }
+
         public void SetDirectColorCanvas(Color[,] arg1)
         {
             AuraSyncModeSwitch(true);
 
-            var colorArray = arg1.Cast<Color>().ToArray();
+            //Claymore's key matrix is [Rows, Columns] whereas a sane key matrix is [Columns, Rows]
+            var colorArray = arg1.TransposeMatrix().FlattenMatrix();
 
             int XMax = GetDirectColorCanvasMaxLength().Item1;
             int YMax = GetDirectColorCanvasMaxLength().Item2;
@@ -391,6 +406,10 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
                     //FN + Special key response
                 }
             }
+            else if (receiveBuffer[0] == 0xc0 && receiveBuffer[1] == 0x81)
+            {
+                return InterfaceZeroResponseTypes.AuraSyncProtocolUpdateCommand;
+            }
 
             return InterfaceZeroResponseTypes.InvalidResponse;
         }
@@ -432,10 +451,19 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             }
         }
 
-        //Warning: This function may throw a TimeoutException
-        private void WaitForIface0Confirmation(InterfaceZeroResponseTypes responseType, TimeSpan? timeout = null)
+        private bool WaitForIface0Confirmation(InterfaceZeroResponseTypes responseType, TimeSpan? timeout = null)
         {
-            GetIface0Response(responseType, out _, timeout, false);
+            try
+            {
+                GetIface0Response(responseType, out _, timeout, false);
+                return true;
+            }
+            catch (TimeoutException)
+            {
+                //Timeouts happen because the keyboard doesn't respond sometimes
+            }
+
+            return false;
         }
         #endregion
 
@@ -461,11 +489,6 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
         }
 
         public Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
-        {
-            throw new NotImplementedException(); //TODO
-        }
-
-        public Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
         {
             throw new NotImplementedException(); //TODO
         }

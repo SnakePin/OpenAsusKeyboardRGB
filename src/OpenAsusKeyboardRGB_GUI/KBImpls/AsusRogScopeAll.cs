@@ -9,14 +9,8 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
 
     class AsusRogScopeNormal : GenericArmouryProtocolKB
     {
-        protected override int PIDOfThisDevice
-        {
-            get { return 6392; }
-        }
-        public override string GetPrettyName()
-        {
-            return "Asus ROG Scope"; //Also named "ROG CTRL" which is the old name
-        }
+        public override string PrettyName => "Asus ROG Scope"; //Also named "ROG CTRL" which is the old name
+        protected override int DevicePID => 6392;
         public override Tuple<int, int> GetDirectColorCanvasMaxLength()
         {
             return Tuple.Create(24, 6); //Value confirmed
@@ -29,14 +23,8 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
 
     class AsusRogScopeTKL : GenericArmouryProtocolKB
     {
-        protected override int PIDOfThisDevice
-        {
-            get { return 6412; }
-        }
-        public override string GetPrettyName()
-        {
-            return "Asus ROG Scope TKL";
-        }
+        public override string PrettyName => "Asus ROG Scope TKL";
+        protected override int DevicePID => 6412;
         public override Tuple<int, int> GetDirectColorCanvasMaxLength()
         {
             return Tuple.Create(26, 7);

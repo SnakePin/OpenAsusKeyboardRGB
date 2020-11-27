@@ -2,9 +2,9 @@
 {
     interface IBasicHIDKB
     {
+        string PrettyName { get; }
         void Close();
         void Connect();
-        string GetPrettyName();
         bool DoesExistOnSystem();
     }
 }

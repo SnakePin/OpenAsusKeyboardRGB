@@ -12,18 +12,16 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
 {
     abstract class GenericArmouryProtocolKB : GenericHIDKeyboard, IArmouryProtocolKB, IAuraSyncProtocolKB
     {
-        protected override int DevicePID { get { return PIDOfThisDevice; } }
-        protected override int DeviceVID { get { return 2821; } }
-
-        abstract protected int PIDOfThisDevice { get; }
+        protected override int DeviceVID => 2821;
+        public abstract string PrettyName { get; }
 
         public virtual void Connect()
         {
             HidDevice iface0Device;
-            if ((iface0Device = Utils.GetHidDevice(2821, PIDOfThisDevice, 1, 0xFF00, out _)) != null)
+            if ((iface0Device = Utils.GetHidDevice(2821, DevicePID, 1, 0xFF00, out _)) != null)
             {
                 //We will use the report ID of the interface 3
-                _ = Utils.GetHidDevice(2821, PIDOfThisDevice, 1, 0xFFC0, out DeviceReportIDToUse);
+                _ = Utils.GetHidDevice(2821, DevicePID, 1, 0xFFC0, out DeviceReportIDToUse);
                 DeviceHIDStream = iface0Device.Open();
                 DeviceHIDStream.ReadTimeout = 3000;
                 DeviceInputHandler = iface0Device.GetReportDescriptor().CreateHidDeviceInputReceiver();
@@ -206,8 +204,6 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             //ExecuteProfileFlashCmd();
         }
 
-        public abstract string GetPrettyName();
-
         public virtual void ExecuteProfileFlashCmd()
         {
             byte[] array = new byte[64];
@@ -353,7 +349,7 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             //This function works with Strix CTRL, Scope TKL, Flare PNK, Flare COD, Charm, TUFK7
             //Doesn't work with TUFKB(K5) and Claymore(any model including the core)
 
-            var colorData = colorDataArg.Cast<Color>().ToArray();
+            var colorData = colorDataArg.FlattenMatrix();
 
             byte[] buffer = new byte[64];
             int XMax = GetDirectColorCanvasMaxLength().Item1;
@@ -434,6 +430,7 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             GetKeyLogData,
             KeyLogSwitch,
             SyncSwitch,
+            AuraSyncProtocolUpdateCommand,
             InvalidResponse
         };
         #endregion
@@ -494,6 +491,10 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             {
                 return InterfaceZeroResponseTypes.SyncSwitch;
             }
+            else if (receiveBuffer[0] == 0xc0 && receiveBuffer[1] == 0x81)
+            {
+                return InterfaceZeroResponseTypes.AuraSyncProtocolUpdateCommand;
+            }
 
             return InterfaceZeroResponseTypes.InvalidResponse;
         }
@@ -544,10 +545,19 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             }
         }
 
-        //Warning: This function may throw a TimeoutException
-        protected virtual void WaitForIface0Confirmation(InterfaceZeroResponseTypes responseType, TimeSpan? timeout = null)
+        protected virtual bool WaitForIface0Confirmation(InterfaceZeroResponseTypes responseType, TimeSpan? timeout = null)
         {
-            GetIface0Response(responseType, out _, timeout, false);
+            try
+            {
+                GetIface0Response(responseType, out _, timeout, false);
+                return true;
+            }
+            catch (TimeoutException)
+            {
+                //Timeouts happen because the keyboard doesn't respond sometimes
+            }
+
+            return false;
         }
         #endregion HID response handling
     }

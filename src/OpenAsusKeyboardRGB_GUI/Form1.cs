@@ -24,7 +24,7 @@ namespace RogArmouryKbRevengGUI
                 {
                     ourKeyboard = currentKBInstance;
                     ourKeyboard.Connect();
-                    infoDeviceNameLabel.Text = ourKeyboard.GetPrettyName();
+                    infoDeviceNameLabel.Text = ourKeyboard.PrettyName;
                     break;
                 }
             }
@@ -68,20 +68,17 @@ namespace RogArmouryKbRevengGUI
         private void button4_Click(object sender, EventArgs e)
         {
             var msData = new MultiStaticData();
-            var rnd = new Random();
-            for (int i = 0; i < 128; i++)
+
+            var enumVals = (Keys[])Enum.GetValues(typeof(Keys));
+            for (int i = 0; i < enumVals.Length; i++)
             {
                 try
                 {
-                    var idx = ourKeyboard.GetMultiStaticColorDataIndexByVKCode(i);
+                    var idx = ourKeyboard.GetMultiStaticColorDataIndexByVKCode((int)enumVals[i]);
                     msData.colorAndBrightness[idx.Item1, idx.Item2].brightness = 100;
-                    msData.colorAndBrightness[idx.Item1, idx.Item2].color = Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
+                    msData.colorAndBrightness[idx.Item1, idx.Item2].color = GetRainbowGradient((float)i / (float)enumVals.Length);
                 }
-                catch (ArgumentException)
-                {
-                    //GetMultiStaticColorDataIndexByVKCode will throw an ArgumentException for unmapped virtual-key codes
-                    continue;
-                }
+                catch { }
             }
 
             ourKeyboard.SetEffect_WriteMultiStaticColorData(msData);
@@ -190,8 +187,9 @@ namespace RogArmouryKbRevengGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
+            //TODO: Add a state to keep track of the aura sync mode to avoid unnecessary calls to this
             ourKeyboard.AuraSyncModeSwitch(true);
-
+            
             IAuraSyncProtocolKB iface = ourKeyboard as IAuraSyncProtocolKB;
 
             var maxlen = iface.GetDirectColorCanvasMaxLength();
@@ -200,15 +198,13 @@ namespace RogArmouryKbRevengGUI
             numericUpDown2.Maximum = colorArr.Length - 1;
             numericUpDown2.Value = Math.Min(numericUpDown2.Maximum, numericUpDown2.Value);
 
-            //var rnd = new Random();
-
             var enumVals = (AsusAuraSDKKeys[])Enum.GetValues(typeof(AsusAuraSDKKeys));
             for (int i = 0; i < enumVals.Length; i++)
             {
                 try
                 {
                     var idx = iface.GetDirectColorCanvasIndexByAuraSDKKey(enumVals[i]);
-                    colorArr[idx.Item1, idx.Item2] = GetRainbowGradient((float)i / (float)enumVals.Length);//Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
+                    colorArr[idx.Item1, idx.Item2] = GetRainbowGradient((float)i / (float)enumVals.Length);
                 }
                 catch (ArgumentException)
                 {
@@ -217,12 +213,7 @@ namespace RogArmouryKbRevengGUI
                 }
             }
 
-            var idx2 = iface.GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys.ROG_KEY_A);
-            colorArr[idx2.Item1, idx2.Item2] = Color.Red;
-
             iface.SetDirectColorCanvas(colorArr);
-
-            //ourKeyboard.AuraSyncModeSwitch(false);
         }
     }
 }

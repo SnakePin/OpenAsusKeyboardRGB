@@ -204,7 +204,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(235, 23);
             this.button4.TabIndex = 0;
-            this.button4.Text = "Set random multistatic";
+            this.button4.Text = "Set random multistatic via Armoury Protocol";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -224,7 +224,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(239, 23);
             this.button6.TabIndex = 8;
-            this.button6.Text = "Set multistatic key via Aura Sync protocol";
+            this.button6.Text = "Set a key to red via Aura Sync protocol";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
@@ -399,7 +399,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(235, 23);
             this.button3.TabIndex = 15;
-            this.button3.Text = "Set random multistatic via Aura Sync protocol";
+            this.button3.Text = "Set a pattern via Aura Sync protocol";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
