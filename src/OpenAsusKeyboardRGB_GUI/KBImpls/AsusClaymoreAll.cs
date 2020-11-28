@@ -209,6 +209,40 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
 
         public Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
         {
+            switch (key)
+            {
+                case AsusAuraSDKKeys.UNOFFICIAL_ISO_BACKSLASH:
+                    return Tuple.Create(4, 1);
+                case AsusAuraSDKKeys.ROG_KEY_Z:
+                    return Tuple.Create(4, 2);
+                case AsusAuraSDKKeys.ROG_KEY_X:
+                    return Tuple.Create(4, 3);
+                case AsusAuraSDKKeys.ROG_KEY_C:
+                    return Tuple.Create(4, 4);
+                case AsusAuraSDKKeys.ROG_KEY_V:
+                    return Tuple.Create(4, 5);
+                case AsusAuraSDKKeys.ROG_KEY_B:
+                    return Tuple.Create(4, 6);
+                case AsusAuraSDKKeys.ROG_KEY_N:
+                    return Tuple.Create(4, 7);
+                case AsusAuraSDKKeys.ROG_KEY_M:
+                    return Tuple.Create(4, 8);
+                case AsusAuraSDKKeys.ROG_KEY_COMMA:
+                    return Tuple.Create(4, 9);
+                case AsusAuraSDKKeys.ROG_KEY_PERIOD:
+                    return Tuple.Create(4, 10);
+                case AsusAuraSDKKeys.ROG_KEY_SLASH:
+                    return Tuple.Create(4, 11);
+                case AsusAuraSDKKeys.UNOFFICIAL_ISO_HASH:
+                    return Tuple.Create(3, 12);
+                case AsusAuraSDKKeys.ROG_KEY_LOGO:
+                    return Tuple.Create(5, 8);
+                    /*case AsusAuraSDKKeys.ROG_KEY_NUMPAD5:
+                        return Tuple.Create(4, 19);
+                    case AsusAuraSDKKeys.ROG_KEY_NUMPAD6:
+                        return Tuple.Create(4, 21);*/
+            }
+
             var rgbKey = AuraSyncProtocolKeyMappings.ClaymoreMapping.FirstOrDefault(x => x.KeyCode == (ushort)key);
             if (rgbKey == null)
             {
