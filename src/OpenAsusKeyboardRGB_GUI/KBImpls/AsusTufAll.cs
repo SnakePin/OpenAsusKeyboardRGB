@@ -20,17 +20,6 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
         }
         public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
         {
-            var tst = ArmouryProtocolKeyMappings.VirtualKeyCodeMap_TR;
-            for (int i = 0; i < tst.GetLength(0); i++)
-            {
-                for (int j = 0; j < tst.GetLength(1); j++)
-                {
-                    if (tst[i, j] == virtualKeyCode)
-                    {
-                        return Tuple.Create(i, j);
-                    }
-                }
-            }
             throw new NotImplementedException(); //TODO
         }
     }

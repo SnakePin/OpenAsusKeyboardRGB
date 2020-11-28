@@ -1,8 +1,8 @@
-﻿using RogArmouryKbRevengGUI.InterfaceGenericKeyboard;
-using RogArmouryKbRevengGUI.KBInterfaces;
+﻿using RogArmouryKbRevengGUI.KBInterfaces;
 using RogArmouryKbRevengGUI_NETFW.KeyMappings;
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RogArmouryKbRevengGUI

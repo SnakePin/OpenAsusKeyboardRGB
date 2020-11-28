@@ -129,16 +129,14 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
                     }
                 }
             }
-            SetWritableData_WRITABLE_DATA_GROUP_MAP_WriteLayerInformationStaticOnly();
+            SetWritableData_MultiStatic_EffectMap_AllStatic();
             ExecuteProfileFlashCmd();
         }
 
 
         //This is for specifying which effect layer applies to which key, in here we just set one static layer across all keys
-        private void SetWritableData_WRITABLE_DATA_GROUP_MAP_WriteLayerInformationStaticOnly()
+        private void SetWritableData_MultiStatic_EffectMap_AllStatic()
         {
-            byte[] byteRev = new byte[2]; //All zeroes for tuf k7
-
             var m_byteSelectEffectArray = new byte[16, 8];
             for (int i = 0; i < m_byteSelectEffectArray.GetLength(0); i++)
             {
@@ -158,7 +156,7 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
 
             array[4] = 0;
             array[5] = 7;
-            Array.Copy(byteRev, 0, array, 6, 2);
+            //Array.Copy(byteRev, 0, array, 6, 2); Is this always zero?
             int num = 0;
             for (int i = 0; i < 7; i++)
             {
@@ -340,14 +338,13 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             //NOTE: the number of rows and columns for all keyboards are as follows
             //Claymore 23,8
             //TUF K5 5,1
-            //Charm 24,6
+            //Charm(Flare Normal) 24,6
             //Flare COD 24,6
             //Rog CTRL(Rog Scope Normal) 24,6
             //Flare PNK 24,6
             //TUF K7 23,6
             //Scope TKL 26,7
-            //This function works with Strix CTRL, Scope TKL, Flare PNK, Flare COD, Charm, TUFK7
-            //Doesn't work with TUFKB(K5) and Claymore(any model including the core)
+            //This function doesn't work with TUFKB(K5) and Claymore(any model including the core)
 
             var colorData = colorDataArg.FlattenMatrix();
 
