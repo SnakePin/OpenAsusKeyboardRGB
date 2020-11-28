@@ -100,6 +100,18 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             InternalSendWriteType44((byte)ByteSelectedEffectTypes.ColorCycle, 128, Color.Empty, Color.Empty, 121);
         }
 
+        public void SetEffect_Breathing(Color breathingColor1, Color breathingColor2, byte brightness, BreathingTypes breathingType, BreathingSpeeds speed)
+        {
+            if (breathingType != BreathingTypes.Single)
+            {
+                //Only single breathing mode is implemented in this keyboard
+                throw new ArgumentException();
+            }
+
+            //Both parameters are hardcoded here too
+            InternalSendWriteType44((byte)ByteSelectedEffectTypes.Breathing, byte.MaxValue, breathingColor1, Color.Empty, 107);
+        }
+
         private void InternalSendWriteType44(byte byteSelectedEffect, byte brightness, Color color1, Color color2, byte speed = 0, byte randColorBit = 0, byte bgSinkBit = 0,
             byte brightnessFadeBit = 0, byte byteDirection5Bits = 0, byte byteExt1 = 0xFF, byte byteExt2 = 0xFF)
         {
@@ -479,11 +491,6 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
         }
 
         public void SetEffect_WriteMultiStaticColorData(MultiStaticData arg1)
-        {
-            throw new NotImplementedException(); //TODO
-        }
-
-        public void SetEffect_Breathing(Color breathingColor1, Color breathingColor2, byte brightness, BreathingTypes breathingType, BreathingSpeeds speed)
         {
             throw new NotImplementedException(); //TODO
         }
