@@ -90,17 +90,16 @@ namespace RogArmouryKbRevengGUI
 
             IAuraSyncProtocolKB iface = ourKeyboard as IAuraSyncProtocolKB;
 
-            var maxlen = iface.GetDirectColorCanvasMaxLength();
-            Color[,] colorArr = new Color[maxlen.Item2, maxlen.Item1];
+            Color[,] colorArr = iface.GetNewDirectColorCanvas();
 
             numericUpDown2.Maximum = colorArr.Length - 1;
             numericUpDown2.Value = Math.Min(numericUpDown2.Maximum, numericUpDown2.Value);
 
-            int x = (int)numericUpDown2.Value / maxlen.Item1;
-            int y = (int)numericUpDown2.Value % maxlen.Item1;
+            int x = (int)numericUpDown2.Value / colorArr.GetLength(1);
+            int y = (int)numericUpDown2.Value % colorArr.GetLength(1);
 
             colorArr[x, y] = Color.Red;
-            iface.SetDirectColorCanvas(colorArr);
+            iface.SendDirectColorCanvas(colorArr);
 
             //ourKeyboard.AuraSyncModeSwitch(false);
         }
@@ -191,19 +190,14 @@ namespace RogArmouryKbRevengGUI
             ourKeyboard.AuraSyncModeSwitch(true);
             
             IAuraSyncProtocolKB iface = ourKeyboard as IAuraSyncProtocolKB;
-
-            var maxlen = iface.GetDirectColorCanvasMaxLength();
-            Color[,] colorArr = new Color[maxlen.Item2, maxlen.Item1];
-
-            numericUpDown2.Maximum = colorArr.Length - 1;
-            numericUpDown2.Value = Math.Min(numericUpDown2.Maximum, numericUpDown2.Value);
+            Color[,] colorArr = iface.GetNewDirectColorCanvas();
 
             var enumVals = (AsusAuraSDKKeys[])Enum.GetValues(typeof(AsusAuraSDKKeys));
             for (int i = 0; i < enumVals.Length; i++)
             {
                 try
                 {
-                    var idx = iface.GetDirectColorCanvasIndexByAuraSDKKey(enumVals[i]);
+                    var idx = iface.GetDirectColorCanvasIndexOfKey(enumVals[i]);
                     colorArr[idx.Item1, idx.Item2] = GetRainbowGradient((float)i / (float)enumVals.Length);
                 }
                 catch (ArgumentException)
@@ -213,7 +207,7 @@ namespace RogArmouryKbRevengGUI
                 }
             }
 
-            iface.SetDirectColorCanvas(colorArr);
+            iface.SendDirectColorCanvas(colorArr);
         }
     }
 }

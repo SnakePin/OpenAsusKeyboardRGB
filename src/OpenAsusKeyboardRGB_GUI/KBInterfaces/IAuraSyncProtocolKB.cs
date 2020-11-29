@@ -6,8 +6,8 @@ namespace RogArmouryKbRevengGUI.KBInterfaces
 {
     interface IAuraSyncProtocolKB : IBasicHIDKB
     {
-        void SetDirectColorCanvas(Color[,] arg1);
-        Tuple<int, int> GetDirectColorCanvasMaxLength();
-        Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key);
+        void SendDirectColorCanvas(Color[,] arg1);
+        Color[,] GetNewDirectColorCanvas();
+        Tuple<int, int> GetDirectColorCanvasIndexOfKey(AsusAuraSDKKeys key);
     }
 }

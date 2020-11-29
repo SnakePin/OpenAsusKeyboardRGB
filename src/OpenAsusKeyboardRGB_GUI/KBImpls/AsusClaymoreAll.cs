@@ -202,12 +202,14 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
         #endregion
 
         #region Direct color canvas update functions
-        public Tuple<int, int> GetDirectColorCanvasMaxLength()
+        private Tuple<int, int> DirectColorCanvasLength = Tuple.Create(23, 8);
+
+        public Color[,] GetNewDirectColorCanvas()
         {
-            return Tuple.Create(23, 8);
+            return new Color[DirectColorCanvasLength.Item2, DirectColorCanvasLength.Item1];
         }
 
-        public Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
+        public Tuple<int, int> GetDirectColorCanvasIndexOfKey(AsusAuraSDKKeys key)
         {
             switch (key)
             {
@@ -244,13 +246,7 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             }
 
             var rgbKey = AuraSyncProtocolKeyMappings.ClaymoreMapping.FirstOrDefault(x => x.KeyCode == (ushort)key);
-            if (rgbKey == null)
-            {
-                throw new ArgumentException();
-            }
-
-            var maxLen = GetDirectColorCanvasMaxLength();
-            if (rgbKey.X >= maxLen.Item2 || rgbKey.Y >= maxLen.Item1)
+            if (rgbKey == null || rgbKey.X >= DirectColorCanvasLength.Item2 || rgbKey.Y >= DirectColorCanvasLength.Item1)
             {
                 throw new ArgumentException();
             }
@@ -258,15 +254,13 @@ namespace RogArmouryKbRevengGUI_NETFW.KBImpls
             return Tuple.Create((int)rgbKey.X, (int)rgbKey.Y);
         }
 
-        public void SetDirectColorCanvas(Color[,] arg1)
+        public void SendDirectColorCanvas(Color[,] arg1)
         {
-            AuraSyncModeSwitch(true);
-
             //Claymore's key matrix is [Rows, Columns] whereas a sane key matrix is [Columns, Rows]
             var colorArray = arg1.TransposeMatrix().FlattenMatrix();
 
-            int XMax = GetDirectColorCanvasMaxLength().Item1;
-            int YMax = GetDirectColorCanvasMaxLength().Item2;
+            int XMax = DirectColorCanvasLength.Item1;
+            int YMax = DirectColorCanvasLength.Item2;
 
             int iVar12 = XMax * YMax;
 

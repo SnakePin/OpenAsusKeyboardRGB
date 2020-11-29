@@ -11,10 +11,7 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
     {
         public override string PrettyName => "Asus ROG Scope"; //Also named "ROG CTRL" which is the old name
         protected override int DevicePID => 6392;
-        public override Tuple<int, int> GetDirectColorCanvasMaxLength()
-        {
-            return Tuple.Create(24, 6); //Value confirmed
-        }
+        protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(24, 6);
         public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
         {
             throw new NotImplementedException(); //TODO
@@ -25,10 +22,7 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
     {
         public override string PrettyName => "Asus ROG Scope TKL";
         protected override int DevicePID => 6412;
-        public override Tuple<int, int> GetDirectColorCanvasMaxLength()
-        {
-            return Tuple.Create(26, 7);
-        }
+        protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(26, 7);
         public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
         {
             throw new NotImplementedException(); //TODO

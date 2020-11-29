@@ -305,27 +305,20 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
         }
 
         public abstract Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode);
-        public abstract Tuple<int, int> GetDirectColorCanvasMaxLength();
-        public virtual Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
+
+        public virtual Tuple<int, int> GetDirectColorCanvasIndexOfKey(AsusAuraSDKKeys key)
         {
             //Mapping the keys that are left unmapped by the Aura SDK
-            if (key == AsusAuraSDKKeys.UNOFFICIAL_ISO_HASH)
+            switch (key)
             {
-                return Tuple.Create(3, 13);
-            }
-            else if (key == AsusAuraSDKKeys.UNOFFICIAL_ISO_BACKSLASH)
-            {
-                return Tuple.Create(4, 1);
+                case AsusAuraSDKKeys.UNOFFICIAL_ISO_BACKSLASH:
+                    return Tuple.Create(4, 1);
+                case AsusAuraSDKKeys.UNOFFICIAL_ISO_HASH:
+                    return Tuple.Create(3, 13);
             }
 
             var rgbKey = AuraSyncProtocolKeyMappings.GenericMapping.FirstOrDefault(x => x.KeyCode == (ushort)key);
-            if (rgbKey == null)
-            {
-                throw new ArgumentException();
-            }
-
-            var maxLen = GetDirectColorCanvasMaxLength();
-            if (rgbKey.X >= maxLen.Item2 || rgbKey.Y >= maxLen.Item1)
+            if (rgbKey == null || rgbKey.X >= DirectColorCanvasLength.Item2 || rgbKey.Y >= DirectColorCanvasLength.Item1)
             {
                 throw new ArgumentException();
             }
@@ -333,7 +326,14 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             return Tuple.Create((int)rgbKey.X, (int)rgbKey.Y);
         }
 
-        public virtual void SetDirectColorCanvas(Color[,] colorDataArg)
+        protected abstract Tuple<int, int> DirectColorCanvasLength { get; }
+
+        public Color[,] GetNewDirectColorCanvas()
+        {
+            return new Color[DirectColorCanvasLength.Item2, DirectColorCanvasLength.Item1];
+        }
+
+        public virtual void SendDirectColorCanvas(Color[,] colorDataArg)
         {
             //NOTE: the number of rows and columns for all keyboards are as follows
             //Claymore 23,8
@@ -345,12 +345,11 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
             //TUF K7 23,6
             //Scope TKL 26,7
             //This function doesn't work with TUFKB(K5) and Claymore(any model including the core)
-
             var colorData = colorDataArg.FlattenMatrix();
 
             byte[] buffer = new byte[64];
-            int XMax = GetDirectColorCanvasMaxLength().Item1;
-            int YMax = GetDirectColorCanvasMaxLength().Item2;
+            int XMax = DirectColorCanvasLength.Item1;
+            int YMax = DirectColorCanvasLength.Item2;
 
             int uVar4 = XMax * YMax;
             byte[] generated0x54field = new byte[uVar4];
@@ -497,6 +496,8 @@ namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
         }
 
         protected event Action<InterfaceZeroResponseTypes, ReadOnlyCollection<byte>> OnValidIface0ResponseEvent;
+
+        //protected List<byte[]>
 
         protected virtual void DispatchInterfaceZeroResponse(byte[] receivedBuffer)
         {

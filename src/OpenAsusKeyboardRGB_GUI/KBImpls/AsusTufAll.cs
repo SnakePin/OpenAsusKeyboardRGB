@@ -13,11 +13,7 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
     {
         public override string PrettyName => "Asus TUF K7";
         protected override int DevicePID => 6314;
-
-        public override Tuple<int, int> GetDirectColorCanvasMaxLength()
-        {
-            return Tuple.Create(23, 6);
-        }
+        protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(23, 6);
         public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
         {
             throw new NotImplementedException(); //TODO
@@ -47,19 +43,16 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
                 DeviceMaximumInputReportLen = iface0Device.GetMaxInputReportLength();
             }
         }
-        public override Tuple<int, int> GetDirectColorCanvasMaxLength()
-        {
-            return Tuple.Create(5, 1);
-        }
+        protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(5, 1);
         public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
         {
             throw new NotImplementedException(); //TODO
         }
-        public override Tuple<int, int> GetDirectColorCanvasIndexByAuraSDKKey(AsusAuraSDKKeys key)
+        public override Tuple<int, int> GetDirectColorCanvasIndexOfKey(AsusAuraSDKKeys key)
         {
             throw new NotImplementedException(); //TODO
         }
-        public override void SetDirectColorCanvas(Color[,] colorData)
+        public override void SendDirectColorCanvas(Color[,] colorData)
         {
             throw new NotImplementedException(); //TODO
         }
