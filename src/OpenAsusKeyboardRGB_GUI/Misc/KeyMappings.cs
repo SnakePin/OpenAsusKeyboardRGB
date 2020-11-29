@@ -24,7 +24,7 @@ namespace RogArmouryKbRevengGUI_NETFW.KeyMappings
         };
     }
 
-    enum AsusAuraSDKKeys
+    public enum AsusAuraSDKKeys
     {
         ROG_KEY_ESCAPE = 0x01,
         ROG_KEY_1 = 0x02,

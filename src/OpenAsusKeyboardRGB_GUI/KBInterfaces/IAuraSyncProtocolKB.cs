@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace RogArmouryKbRevengGUI.KBInterfaces
 {
-    interface IAuraSyncProtocolKB : IBasicHIDKB
+    public interface IAuraSyncProtocolKB : IBasicHIDKB
     {
         void SendDirectColorCanvas(Color[,] arg1);
         Color[,] GetNewDirectColorCanvas();

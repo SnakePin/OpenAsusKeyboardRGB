@@ -1,6 +1,6 @@
 ﻿namespace RogArmouryKbRevengGUI.KBInterfaces
 {
-    interface IBasicHIDKB
+    public interface IBasicHIDKB
     {
         string PrettyName { get; }
         void Close();

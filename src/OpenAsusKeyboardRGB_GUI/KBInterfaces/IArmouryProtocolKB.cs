@@ -6,7 +6,7 @@ namespace RogArmouryKbRevengGUI.KBInterfaces
     //TODO: Add animation frame getter setters
     //TODO: Add macro stuff(?)
     //TODO: Implement generic FW update protocol(?)
-    interface IArmouryProtocolKB : IBasicHIDKB
+    public interface IArmouryProtocolKB : IBasicHIDKB
     {
         void SetProfileIndex(byte newIndex);
         byte GetProfileIndex();
@@ -23,35 +23,35 @@ namespace RogArmouryKbRevengGUI.KBInterfaces
         void SetEffect_Static(Color mainColor, Color backgroundColor, byte brightness);
     }
 
-    enum ColorCycleSpeeds
+    public enum ColorCycleSpeeds
     {
         Fast,
         Medium,
         Slow
     };
-    enum BreathingTypes
+    public enum BreathingTypes
     {
         Single,
         Double,
         Random
     };
-    enum BreathingSpeeds
+    public enum BreathingSpeeds
     {
         Fast,
         Medium,
         Slow
     };
-    struct ColorAndBrightness
+    public struct ColorAndBrightness
     {
         public byte brightness;
         public Color color;
     }
-    class MultiStaticData
+    public class MultiStaticData
     {
         //The size of this array is hardcoded in the official app and is same for every keyboard
         public ColorAndBrightness[,] colorAndBrightness = new ColorAndBrightness[16, 9];
     }
-    class KeyLogData
+    public class KeyLogData
     {
         //The size of this array is hardcoded too
         public byte[,] keyPressCounts = new byte[16, 9];
