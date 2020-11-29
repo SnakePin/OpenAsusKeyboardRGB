@@ -5,7 +5,7 @@ using System.Reflection;
 using HidSharp;
 using HidSharp.Reports.Encodings;
 
-namespace OpenAsusKeyboardRGB_GUI
+namespace OpenAsusKeyboardRGB
 {
     class Utils
     {

@@ -2,7 +2,7 @@
 using HidSharp.Reports.Input;
 using System.Linq;
 
-namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
+namespace OpenAsusKeyboardRGB.KBImpls.GenericImpls
 {
     abstract class GenericHIDKeyboard
     {

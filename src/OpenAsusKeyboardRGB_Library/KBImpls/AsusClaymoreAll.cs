@@ -1,15 +1,14 @@
 ﻿using HidSharp;
-using RogArmouryKbRevengGUI;
-using RogArmouryKbRevengGUI.KBImpls.GenericImpls;
-using RogArmouryKbRevengGUI.KBInterfaces;
-using RogArmouryKbRevengGUI_NETFW.KeyMappings;
+using OpenAsusKeyboardRGB.KBImpls.GenericImpls;
+using OpenAsusKeyboardRGB.KBInterfaces;
+using OpenAsusKeyboardRGB.KeyMappings;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
 
-namespace RogArmouryKbRevengGUI_NETFW.KBImpls
+namespace OpenAsusKeyboardRGB.KBImpls
 {
     class AsusClaymore : GenericHIDKeyboard, IArmouryProtocolKB, IAuraSyncProtocolKB
     {

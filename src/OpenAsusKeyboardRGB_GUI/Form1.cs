@@ -1,11 +1,11 @@
-﻿using RogArmouryKbRevengGUI.KBInterfaces;
-using RogArmouryKbRevengGUI_NETFW.KeyMappings;
+﻿using OpenAsusKeyboardRGB.KBInterfaces;
+using OpenAsusKeyboardRGB.KeyMappings;
 using System;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace RogArmouryKbRevengGUI
+namespace OpenAsusKeyboardRGB_GUI
 {
     public partial class Form1 : Form
     {

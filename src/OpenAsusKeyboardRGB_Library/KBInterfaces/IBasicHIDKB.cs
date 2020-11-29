@@ -1,4 +1,4 @@
-﻿namespace RogArmouryKbRevengGUI.KBInterfaces
+﻿namespace OpenAsusKeyboardRGB.KBInterfaces
 {
     public interface IBasicHIDKB
     {

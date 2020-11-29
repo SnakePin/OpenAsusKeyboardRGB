@@ -1,13 +1,12 @@
-﻿
-using HidSharp;
-using RogArmouryKbRevengGUI.KBImpls.GenericImpls;
-using RogArmouryKbRevengGUI_NETFW.KeyMappings;
+﻿using HidSharp;
+using OpenAsusKeyboardRGB.KBImpls.GenericImpls;
+using OpenAsusKeyboardRGB.KeyMappings;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
+namespace OpenAsusKeyboardRGB.InterfaceGenericKeyboard
 {
     class AsusTufK7 : GenericArmouryProtocolKB
     {

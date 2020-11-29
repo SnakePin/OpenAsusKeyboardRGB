@@ -1,4 +1,4 @@
-﻿namespace RogArmouryKbRevengGUI
+﻿namespace OpenAsusKeyboardRGB_GUI
 {
     partial class Form1
     {

@@ -1,8 +1,8 @@
-﻿using RogArmouryKbRevengGUI.KBImpls.GenericImpls;
-using RogArmouryKbRevengGUI_NETFW.KeyMappings;
+﻿using OpenAsusKeyboardRGB.KBImpls.GenericImpls;
+using OpenAsusKeyboardRGB.KeyMappings;
 using System;
 
-namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
+namespace OpenAsusKeyboardRGB.InterfaceGenericKeyboard
 {
     //WARNING: This might not work correctly, protocol is slightly different for all Rog Scopes
     //PID is 6400 for PBT (It doesn't even have RGB leds, dunno if I should add it)
@@ -12,6 +12,17 @@ namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
         public override string PrettyName => "Asus ROG Scope"; //Also named "ROG CTRL" which is the old name
         protected override int DevicePID => 6392;
         protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(24, 6);
+        public override Tuple<int, int> GetDirectColorCanvasIndexOfKey(AsusAuraSDKKeys key)
+        {
+            switch (key)
+            {
+                case AsusAuraSDKKeys.ROG_KEY_LMENU:
+                    return Tuple.Create(5, 3);
+                case AsusAuraSDKKeys.ROG_KEY_LWIN:
+                    return Tuple.Create(5, 2);
+            }
+            return base.GetDirectColorCanvasIndexOfKey(key);
+        }
         public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
         {
             throw new NotImplementedException(); //TODO

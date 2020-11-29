@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace RogArmouryKbRevengGUI
+namespace OpenAsusKeyboardRGB_GUI
 {
     static class Program
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace RogArmouryKbRevengGUI.KBInterfaces
+namespace OpenAsusKeyboardRGB.KBInterfaces
 {
     //TODO: Add animation frame getter setters
     //TODO: Add macro stuff(?)

@@ -1,7 +1,7 @@
-﻿using RogArmouryKbRevengGUI.KBImpls.GenericImpls;
+﻿using OpenAsusKeyboardRGB.KBImpls.GenericImpls;
 using System;
 
-namespace RogArmouryKbRevengGUI.InterfaceGenericKeyboard
+namespace OpenAsusKeyboardRGB.InterfaceGenericKeyboard
 {
     class AsusStrixFlareNormal : GenericArmouryProtocolKB
     {

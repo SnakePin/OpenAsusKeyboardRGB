@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Collections.ObjectModel;
 using System.Linq;
-using RogArmouryKbRevengGUI.KBInterfaces;
-using RogArmouryKbRevengGUI_NETFW.KeyMappings;
+using OpenAsusKeyboardRGB.KBInterfaces;
+using OpenAsusKeyboardRGB.KeyMappings;
 
-namespace RogArmouryKbRevengGUI.KBImpls.GenericImpls
+namespace OpenAsusKeyboardRGB.KBImpls.GenericImpls
 {
     abstract class GenericArmouryProtocolKB : GenericHIDKeyboard, IArmouryProtocolKB, IAuraSyncProtocolKB
     {

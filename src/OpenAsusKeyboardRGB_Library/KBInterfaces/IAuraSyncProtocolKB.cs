@@ -1,8 +1,8 @@
-﻿using RogArmouryKbRevengGUI_NETFW.KeyMappings;
+﻿using OpenAsusKeyboardRGB.KeyMappings;
 using System;
 using System.Drawing;
 
-namespace RogArmouryKbRevengGUI.KBInterfaces
+namespace OpenAsusKeyboardRGB.KBInterfaces
 {
     public interface IAuraSyncProtocolKB : IBasicHIDKB
     {
