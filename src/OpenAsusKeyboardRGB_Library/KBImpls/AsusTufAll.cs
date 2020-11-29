@@ -2,9 +2,7 @@
 using OpenAsusKeyboardRGB.KBImpls.GenericImpls;
 using OpenAsusKeyboardRGB.KeyMappings;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace OpenAsusKeyboardRGB.InterfaceGenericKeyboard
 {

@@ -1,12 +1,12 @@
 ﻿using HidSharp;
-using System.Drawing;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Collections.ObjectModel;
-using System.Linq;
 using OpenAsusKeyboardRGB.KBInterfaces;
 using OpenAsusKeyboardRGB.KeyMappings;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Linq;
+using System.Threading;
 
 namespace OpenAsusKeyboardRGB.KBImpls.GenericImpls
 {

@@ -1,8 +1,9 @@
 ﻿using OpenAsusKeyboardRGB.KBInterfaces;
 using OpenAsusKeyboardRGB.KeyMappings;
+using OpenAsusKeyboardRGB.Misc;
 using System;
 using System.Drawing;
-using System.Threading;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace OpenAsusKeyboardRGB_GUI
@@ -18,22 +19,15 @@ namespace OpenAsusKeyboardRGB_GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            foreach (IArmouryProtocolKB currentKBInstance in ReflectiveEnumerator.GetEnumerableOfType<IArmouryProtocolKB>())
-            {
-                if (currentKBInstance.DoesExistOnSystem())
-                {
-                    ourKeyboard = currentKBInstance;
-                    ourKeyboard.Connect();
-                    infoDeviceNameLabel.Text = ourKeyboard.PrettyName;
-                    break;
-                }
-            }
-
+            ourKeyboard = ArmouryKeyboardFinder.Find().FirstOrDefault();
             if (ourKeyboard == null)
             {
                 Console.WriteLine("No compatible device found. Exiting...");
                 Console.ReadKey();
             }
+
+            ourKeyboard.Connect();
+            infoDeviceNameLabel.Text = ourKeyboard.PrettyName;
         }
 
         private void staticChangeColorBtn_Click(object sender, EventArgs e)
@@ -188,7 +182,7 @@ namespace OpenAsusKeyboardRGB_GUI
         {
             //TODO: Add a state to keep track of the aura sync mode to avoid unnecessary calls to this
             ourKeyboard.AuraSyncModeSwitch(true);
-            
+
             IAuraSyncProtocolKB iface = ourKeyboard as IAuraSyncProtocolKB;
             Color[,] colorArr = iface.GetNewDirectColorCanvas();
 

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HidSharp;
+using HidSharp.Reports.Encodings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using HidSharp;
-using HidSharp.Reports.Encodings;
 
 namespace OpenAsusKeyboardRGB
 {
