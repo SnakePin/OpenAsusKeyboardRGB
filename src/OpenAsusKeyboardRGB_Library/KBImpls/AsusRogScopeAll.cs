@@ -39,4 +39,37 @@ namespace OpenAsusKeyboardRGB.InterfaceGenericKeyboard
             throw new NotImplementedException(); //TODO
         }
     }
+
+    class AsusRogScopeTKLPUNK : GenericArmouryProtocolKB
+    {
+        public override string PrettyName => "Asus ROG Scope TKL Electro Punk";
+        protected override int DevicePID => 6484;
+        protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(26, 7);
+        public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
+        {
+            throw new NotImplementedException(); //TODO
+        }
+    }
+
+    class AsusRogScopeTKLGundam : GenericArmouryProtocolKB
+    {
+        public override string PrettyName => "Asus ROG Scope TKL Gundam Ltd";
+        protected override int DevicePID => 6561;
+        protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(26, 7);
+        public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
+        {
+            throw new NotImplementedException(); //TODO
+        }
+    }
+
+    class AsusRogScopeRx_XA05 : GenericArmouryProtocolKB
+    {
+        public override string PrettyName => "Asus ROG Scope Rx";
+        protected override int DevicePID => 6481;
+        protected override Tuple<int, int> DirectColorCanvasLength => Tuple.Create(23, 6);
+        public override Tuple<int, int> GetMultiStaticColorDataIndexByVKCode(int virtualKeyCode)
+        {
+            throw new NotImplementedException(); //TODO
+        }
+    }
 }

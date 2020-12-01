@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cassert>
+#include <iostream>
 #include "RogKeyEnum.h"
 
 struct RawKeyMapFromBinaryStruct {
@@ -40,17 +41,25 @@ void GenerateKeyMap(MappedKeyStruct* keyMappingArray, RawKeyMapFromBinaryStruct*
 
 int main(int argc, char* argv[])
 {
-	if (argc < 2) {
+	if (argc < 4) {
+		std::cerr << "Invalid argument count.\n" "Usage: " << argv[0] << " rawMapAddressInHex inputFilePath outFilePath\n";
 		return 1;
 	}
 
-	const std::string inputPath = argv[1];
-	const std::string genericMappingOutPath = "genericMapDump.txt";
-	const std::string claymoreMappingOutPath = "claymoreMapDump.txt";
+	//Usage: dumper.exe 0xDEADBEEF inputFile.bin outFile.txt
 
 	//AacKbHal_x64.dll (SHA1 7EF92EFA38B788692B2910A542F4F1F3E3913902)
-	const size_t genericRawKeymapOffset = 0x86990;
-	const size_t claymoreRawKeymapOffset = 0x74580;
+	//Generic offset = 0x86990
+	//Claymore offset = 0x74580
+
+	//AacKbHal_x64.dll (SHA1 FAAE294497CEF9D4C62D30A221818078515D4AB7) (Armoury Crate as of 1/12/2020)
+	//Generic offset = 0x114720
+	//Claymore offset = 0xED720
+	//Falchion(M601) offset = 0x1142F0
+
+	const size_t rawKeymapOffset = std::stoul(argv[1], nullptr, 16);
+	const std::string inputPath = argv[2];
+	const std::string outFilePath = argv[3];
 
 	if (auto fstrm = std::ifstream(inputPath, std::ios::binary)) {
 		fstrm.seekg(0, std::ios::end);
@@ -60,38 +69,15 @@ int main(int argc, char* argv[])
 		std::vector<uint8_t> vec(size);
 		fstrm.read((char*)vec.data(), size);
 
-		if (auto outFile = std::ofstream(genericMappingOutPath)) {
+		if (auto outFile = std::ofstream(outFilePath)) {
 			size_t len = 0;
-			auto rawKeyMapAddr = reinterpret_cast<RawKeyMapFromBinaryStruct*>(&vec[genericRawKeymapOffset]);
+			auto rawKeyMapAddr = reinterpret_cast<RawKeyMapFromBinaryStruct*>(&vec[rawKeymapOffset]);
 			GenerateKeyMap(nullptr, rawKeyMapAddr, &len);
 			std::vector<MappedKeyStruct> arrayOut(len);
 			GenerateKeyMap(arrayOut.data(), rawKeyMapAddr);
 
 			for (auto& key : arrayOut)
 			{
-				//int index = key.X * 23 + key.Y;
-				if (key.KeyCode == static_cast<uint16_t>(RogKeys::ROG_KEY_A)) {
-					assert(key.X == 3 && key.Y == 2);
-				}
-
-				outFile << "X: " << static_cast<int>(key.X) << " Y: " << static_cast<int>(key.Y) << " KeyCode: 0x" << std::hex << key.KeyCode << std::dec << '\n';
-			}
-		}
-
-		if (auto outFile = std::ofstream(claymoreMappingOutPath)) {
-			size_t len = 0;
-			auto rawKeyMapAddr = reinterpret_cast<RawKeyMapFromBinaryStruct*>(&vec[claymoreRawKeymapOffset]);
-			GenerateKeyMap(nullptr, rawKeyMapAddr, &len);
-			std::vector<MappedKeyStruct> arrayOut(len);
-			GenerateKeyMap(arrayOut.data(), rawKeyMapAddr);
-
-			for (auto& key : arrayOut)
-			{
-				//int index = key.Y * 8 + key.X;
-				if (key.KeyCode == static_cast<uint16_t>(RogKeys::ROG_KEY_A)) {
-					assert(key.X == 3 && key.Y == 1);
-				}
-
 				outFile << "X: " << static_cast<int>(key.X) << " Y: " << static_cast<int>(key.Y) << " KeyCode: 0x" << std::hex << key.KeyCode << std::dec << '\n';
 			}
 		}
