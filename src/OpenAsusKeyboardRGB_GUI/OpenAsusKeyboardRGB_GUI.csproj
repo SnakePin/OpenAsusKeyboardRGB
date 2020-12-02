@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>OpenAsusKeyboardRGB_GUI</RootNamespace>
     <AssemblyName>OpenAsusKeyboardRGB_GUI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -82,7 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenAsusKeyboardRGB_Library\OpenAsusKeyboardRGB_Library.csproj">
-      <Project>{9ECAE9F6-F800-4C0F-8E42-F5528FE3D9CE}</Project>
+      <Project>{dd6150b7-2cec-4ed3-9e3f-9253e81b1b0b}</Project>
       <Name>OpenAsusKeyboardRGB_Library</Name>
     </ProjectReference>
   </ItemGroup>
